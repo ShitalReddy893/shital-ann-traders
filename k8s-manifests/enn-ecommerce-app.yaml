@@ -4,7 +4,7 @@ metadata:
   name: enn-ecommerce-config
   namespace: shital-ns
 data:
-  APP_BASE_HREF: /ecommerce   # 👈 base href for Angular routing
+  APP_BASE_HREF: /   # Base href set to root
 
 ---
 apiVersion: apps/v1
@@ -25,13 +25,13 @@ spec:
         app: enn-ecommerce-app
     spec:
       containers:
-      - name: enn-ecommerce-container
-        image: 230027225622.dkr.ecr.us-east-1.amazonaws.com/shital-ns/enn-ecommerce-app:latest
-        ports:
-        - containerPort: 80    # Angular apps usually served on 80 inside container
-        envFrom:
-        - configMapRef:
-            name: enn-ecommerce-config
+        - name: enn-ecommerce-container
+          image: 230027225622.dkr.ecr.us-east-1.amazonaws.com/shital-ns/enn-ecommerce-app:latest
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: enn-ecommerce-config
 
 ---
 apiVersion: v1
@@ -64,7 +64,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /ecommerce
+          - path: /
             pathType: Prefix
             backend:
               service:
