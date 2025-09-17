@@ -1,0 +1,20 @@
+.product-detail-grid {
+  display: grid;
+  grid-template-columns: auto auto; /* दोन column - image आणि details */
+  gap: 20px;
+  align-items: center;       /* vertically center */
+  justify-content: center;   /* horizontally center */
+  min-height: 80vh;          /* screen मध्ये vertical center करण्यासाठी */
+}
+
+.product-img-lg {
+  width: 250px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

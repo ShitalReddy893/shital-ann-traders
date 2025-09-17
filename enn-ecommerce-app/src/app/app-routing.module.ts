@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './login/login/login.component';
-import { HomeComponent } from './home/home.component';
-import { SellerAuthComponent } from './seller-auth/seller-auth.component';
-import { SellerHomeComponent } from './seller-home/seller-home.component';
+import { HomeComponent } from './components/home/home.component';
+import { SellerAuthComponent } from './components/seller-auth/seller-auth.component';
+import { SellerHomeComponent } from './components/seller-home/seller-home.component';
+import { ProductdetailsComponent } from './components/productdetails/productdetails.component';
+import { LoginComponent } from './components/login/login.component';
+
 
 const routes: Routes = [
   // { path: '', redirectTo: 'login', pathMatch: 'full' },  // default route
@@ -66,6 +68,10 @@ const routes: Routes = [
     path: 'seller-home',
     component: SellerHomeComponent,
   },
+  { path: 'product/:id', 
+    component: ProductdetailsComponent 
+  },
+
   {
     path: 'login',
     component: LoginComponent

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { CartService } from '../services/cart.service';
-import { OrderService, Order } from '../services/order.service';
-import { Product, ProductService } from '../services/product.service';
+import { CartService } from '../../services/cart.service';
+import { OrderService, Order } from '../../services/order.service';
+import { Product, ProductService } from '../../services/product.service';
 
 
 @Component({
@@ -14,7 +14,8 @@ export class SellerHomeComponent {
   products: Product[] = [];
   cartItems: Product[] = [];
   userMessage: string = '';
-
+  product: any = {};
+  selectedFile: File | null = null;
   constructor(
     private cartService: CartService,
     private orderService: OrderService,
@@ -27,7 +28,7 @@ export class SellerHomeComponent {
     // ✅ Products load from AWS RDS via backend
     this.productService.getAllProducts().subscribe({
       next: (data) => this.products = data,
-      error: (err) => console.error('❌ Failed to load products:', err)
+      error: (err) => console.error('Failed to load products:', err)
     });
   }
 
@@ -53,8 +54,6 @@ export class SellerHomeComponent {
         alert('❌ Failed to save order to backend');
       }
     });
-
-
     
     alert(`${product.name} added to cart!`);
   }
@@ -65,6 +64,19 @@ export class SellerHomeComponent {
       error: (err) => alert('Error sending notification: ' + err.message)
     });
     
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+
+  onSubmit() {
+    if (this.selectedFile) {
+      this.productService.uploadImage(this.product, this.selectedFile)
+        .subscribe(res => {
+          console.log('Product added successfully', res);
+        });
+    }
   }
 
   removeFromCart(product: Product) {

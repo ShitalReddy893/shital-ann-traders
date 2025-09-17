@@ -3,13 +3,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login/login.component';
 import { AppRoutingModule } from "./app-routing.module";
-import { HeaderComponent } from './header/header.component';
-import { HomeComponent } from './home/home.component';
-import { SellerAuthComponent } from './seller-auth/seller-auth.component';
-import { SellerHomeComponent } from './seller-home/seller-home.component';
+import { HeaderComponent } from './components/header/header.component';
+import { HomeComponent } from './components/home/home.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ProductdetailsComponent } from './components/productdetails/productdetails.component';
+import { SellerAuthComponent } from './components/seller-auth/seller-auth.component';
+import { SellerHomeComponent } from './components/seller-home/seller-home.component';
+import { LoginComponent } from './components/login/login.component';
+
 
 @NgModule({
   declarations: [
@@ -18,7 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
     HeaderComponent,
     HomeComponent,
     SellerAuthComponent,
-    SellerHomeComponent
+    SellerHomeComponent,
+    ProductdetailsComponent
   ],
   imports: [
     BrowserModule,
