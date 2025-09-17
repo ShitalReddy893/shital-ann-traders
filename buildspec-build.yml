@@ -7,13 +7,13 @@ env:
     REPO_ADMIN: shital-ns/admin-service
     REPO_ORDER: shital-ns/order-service
     REPO_PRODUCT: shital-ns/product-service
+    REPO_ECOMMERCE: shital-ns/enn-ecommerce-app   # 👈 Added Angular repo
 
 phases:
   pre_build:
     commands:
       - echo "Logging in to Amazon ECR..."
       - aws --version
-      # Docker login using pipe (most reliable in CodeBuild)
       - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
 
   build:
@@ -35,12 +35,18 @@ phases:
       - ls -la product-service
       - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:latest product-service
 
+      # Angular App
+      - echo "Building enn-ecommerce-app..."
+      - ls -la enn-ecommerce-app
+      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:latest enn-ecommerce-app
+
   post_build:
     commands:
       - echo "Pushing Docker images to ECR..."
       - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ADMIN:latest
       - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ORDER:latest
       - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:latest
+      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:latest   # 👈 Push Angular app
       - echo "Build and push completed successfully!"
 
 artifacts:
