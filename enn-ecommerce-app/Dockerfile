@@ -6,19 +6,17 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-# Copy project files
+# Copy project files and build
 COPY . .
-
-# Build Angular app with /ecommerce base href
-RUN npm run build -- --configuration production --base-href /ecommerce/
+RUN npm run build -- --configuration production
 
 # Stage 2: Serve Angular app with Nginx
 FROM public.ecr.aws/nginx/nginx:alpine
 
-# Copy custom nginx config
+# Copy nginx.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy built Angular app
+# Copy Angular build output
 COPY --from=build /app/dist/enn-ecommerce-app /usr/share/nginx/html
 
 EXPOSE 80
