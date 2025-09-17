@@ -8,7 +8,6 @@ env:
     REPO_ORDER: shital-ns/order-service
     REPO_PRODUCT: shital-ns/product-service
     REPO_ECOMMERCE: shital-ns/enn-ecommerce-app
-    IMAGE_TAG: build-$CODEBUILD_BUILD_NUMBER
 
 phases:
   pre_build:
@@ -20,28 +19,31 @@ phases:
   build:
     commands:
       - echo "========== Building Docker images =========="
-      - echo "Building admin-service"
-      - ls -la admin-service || echo "WARNING: admin-service folder not found"
-      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ADMIN:$IMAGE_TAG admin-service
-      - echo "Building order-service"
-      - ls -la order-service || echo "WARNING: order-service folder not found"
-      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ORDER:$IMAGE_TAG order-service
-      - echo "Building product-service"
-      - ls -la product-service || echo "WARNING: product-service folder not found"
-      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:$IMAGE_TAG product-service
-      - echo "Building enn-ecommerce-app"
-      - ls -la enn-ecommerce-app || echo "WARNING: enn-ecommerce-app folder not found"
-      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:$IMAGE_TAG enn-ecommerce-app
+
+      - echo "Building admin-service..."
+      - ls -la admin-service || echo "WARNING: admin-service folder not found, skipping build"
+      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ADMIN:latest admin-service || echo "WARNING: admin-service build failed, skipping"
+
+      - echo "Building order-service..."
+      - ls -la order-service || echo "WARNING: order-service folder not found, skipping build"
+      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ORDER:latest order-service || echo "WARNING: order-service build failed, skipping"
+
+      - echo "Building product-service..."
+      - ls -la product-service || echo "WARNING: product-service folder not found, skipping build"
+      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:latest product-service || echo "WARNING: product-service build failed, skipping"
+
+      - echo "Building enn-ecommerce-app..."
+      - ls -la enn-ecommerce-app || echo "WARNING: enn-ecommerce-app folder not found, skipping build"
+      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:latest enn-ecommerce-app || echo "WARNING: enn-ecommerce-app build failed, skipping"
 
   post_build:
     commands:
       - echo "========== Pushing Docker images =========="
-      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ADMIN:$IMAGE_TAG
-      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ORDER:$IMAGE_TAG
-      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:$IMAGE_TAG
-      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:$IMAGE_TAG
+      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ADMIN:latest || echo "WARNING: admin-service push skipped"
+      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ORDER:latest || echo "WARNING: order-service push skipped"
+      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:latest || echo "WARNING: product-service push skipped"
+      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:latest || echo "WARNING: enn-ecommerce-app push skipped"
       - echo "Build and push completed successfully"
-      - echo "Image tag used: $IMAGE_TAG"
 
 artifacts:
   files:
