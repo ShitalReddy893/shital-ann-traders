@@ -8,7 +8,7 @@ env:
     REPO_ORDER: shital-ns/order-service
     REPO_PRODUCT: shital-ns/product-service
     REPO_ECOMMERCE: shital-ns/enn-ecommerce-app
-    IMAGE_TAG: build-$CODEBUILD_BUILD_NUMBER   # unique tag per build
+    IMAGE_TAG: build-$CODEBUILD_BUILD_NUMBER   # Unique tag per build
 
 phases:
   pre_build:
@@ -39,19 +39,4 @@ phases:
       # Angular App
       - echo "Building enn-ecommerce-app..."
       - ls -la enn-ecommerce-app || echo "⚠️ enn-ecommerce-app folder not found"
-      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:$IMAGE_TAG enn-ecommerce-app || echo "⚠️ enn-ecommerce-app build failed, skipping"
-
-  post_build:
-    commands:
-      - echo "========== Pushing Docker images =========="
-
-      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ADMIN:$IMAGE_TAG || echo "⚠️ admin-service push skipped"
-      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ORDER:$IMAGE_TAG || echo "⚠️ order-service push skipped"
-      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:$IMAGE_TAG || echo "⚠️ product-service push skipped"
-      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:$IMAGE_TAG || echo "⚠️ enn-ecommerce-app push skipped"
-
-      - echo "✅ Build and push completed (with possible skips)."
-      - echo "Image tag used: $IMAGE_TAG"
-
-artifacts:
-  files: '**/*'
+      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION_
