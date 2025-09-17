@@ -1,5 +1,6 @@
 # Stage 1: Build Angular app
-FROM node:20-alpine AS build
+FROM 123456789012.dkr.ecr.us-east-1.amazonaws.com/my-node:20-alpine AS build
+
 WORKDIR /app
 
 COPY package*.json ./
