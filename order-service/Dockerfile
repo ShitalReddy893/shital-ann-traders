@@ -1,12 +1,22 @@
 # Stage 1: Build the application
-FROM maven:3.9.4-amazoncorretto-17 AS build
+FROM public.ecr.aws/sam/build-maven:3.9.4-amazoncorretto-17 AS build
 WORKDIR /app
+
+# Copy the project files into the container
 COPY . .
+
+# Build the application (skip tests)
 RUN mvn clean package -DskipTests
 
 # Stage 2: Run the application
-FROM amazoncorretto:17-alpine
+FROM public.ecr.aws/amazoncorretto/amazoncorretto:17-alpine
 WORKDIR /app
+
+# Copy the built jar from the build stage
 COPY --from=build /app/target/*.jar app.jar
-EXPOSE 8081
+
+# Expose port
+EXPOSE 8080
+
+# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
