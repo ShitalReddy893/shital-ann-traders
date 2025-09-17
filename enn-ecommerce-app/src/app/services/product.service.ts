@@ -15,7 +15,7 @@ export interface Product {
 })
 export class ProductService {
 
-  private apiUrl = 'http://localhost:8081/api/products'; // Spring Boot
+  private apiUrl = 'http://k8s-shitalns-producti-f5f8ce99e5-1602930351.us-east-1.elb.amazonaws.com/product/api/products'; // Spring Boot
 
   constructor(private http: HttpClient) { }
 
