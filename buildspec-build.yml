@@ -20,23 +20,15 @@ phases:
   build:
     commands:
       - echo "========== Building Docker images =========="
-
-      # Admin Service
       - echo "Building admin-service..."
       - ls -la admin-service || echo "⚠️ admin-service folder not found"
       - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ADMIN:$IMAGE_TAG admin-service || echo "⚠️ admin-service build failed, skipping"
-
-      # Order Service
       - echo "Building order-service..."
       - ls -la order-service || echo "⚠️ order-service folder not found"
       - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ORDER:$IMAGE_TAG order-service || echo "⚠️ order-service build failed, skipping"
-
-      # Product Service
       - echo "Building product-service..."
       - ls -la product-service || echo "⚠️ product-service folder not found"
       - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:$IMAGE_TAG product-service || echo "⚠️ product-service build failed, skipping"
-
-      # Angular App
       - echo "Building enn-ecommerce-app..."
       - ls -la enn-ecommerce-app || echo "⚠️ enn-ecommerce-app folder not found"
       - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:$IMAGE_TAG enn-ecommerce-app || echo "⚠️ enn-ecommerce-app build failed, skipping"
