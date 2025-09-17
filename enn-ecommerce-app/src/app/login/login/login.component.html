@@ -1,0 +1,25 @@
+
+<div class="seller-auth">
+  <div class="sign-up">
+    <h1>Login / Signup with Cognito</h1>
+
+    <!-- Sign Up -->
+    <form class="common-form">
+      <input class="form-input" [(ngModel)]="email" name="email" placeholder="Email (for signup)" />
+      <input class="form-input" [(ngModel)]="password" name="password" type="password" placeholder="Password" />
+      <div class="form-actions">
+        <button class="form-button" *ngIf="!isConfirmSignupClicked" type="submit" (click)="signUp()">Sign-Up</button>
+        <button class="form-button" type="button" (click)="signIn()">Sign-In</button>
+        <!-- <button class="form-button" type="button" (click)="signOut()">SignOut</button> -->
+      </div>
+    </form>
+
+    <!-- Confirm Signup -->
+    <form class="common-form" *ngIf="isSignupClicked" (ngSubmit)="confirmSignUp()">
+      <input class="form-input" [(ngModel)]="code" name="code" placeholder="Confirmation Code" />
+      <button class="form-button" type="submit">Confirm Sign Up</button>
+    </form>
+
+    <p>{{message}}</p>
+  </div>
+</div>

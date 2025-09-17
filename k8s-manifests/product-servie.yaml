@@ -1,0 +1,77 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: product-config
+  namespace: shital-ns
+data:
+  server.servlet.context-path: /product
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-service
+  namespace: shital-ns
+  labels:
+    app: product-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-service
+  template:
+    metadata:
+      labels:
+        app: product-service
+    spec:
+      containers:
+      - name: product-container
+        image: 230027225622.dkr.ecr.us-east-1.amazonaws.com/shital-ns/product-service:latest
+        ports:
+        - containerPort: 8082
+        envFrom:
+        - configMapRef:
+            name: product-config
+        - secretRef:
+            name: db-credentials
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-service
+  namespace: shital-ns
+spec:
+  selector:
+    app: product-service
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: product-ingress
+  namespace: shital-ns
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-path: /product/actuator/health
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /product
+            pathType: Prefix
+            backend:
+              service:
+                name: product-service
+                port:
+                  number: 8082

@@ -1,0 +1,47 @@
+version: 0.2
+
+env:
+  variables:
+    REGION: us-east-1
+    ACCOUNT_ID: 230027225622
+    REPO_ADMIN: shital-ns/admin-service
+    REPO_ORDER: shital-ns/order-service
+    REPO_PRODUCT: shital-ns/product-service
+
+phases:
+  pre_build:
+    commands:
+      - echo "Logging in to Amazon ECR..."
+      - aws --version
+      # Docker login using pipe (most reliable in CodeBuild)
+      - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
+
+  build:
+    commands:
+      - echo "Building Docker images..."
+
+      # Admin Service
+      - echo "Building admin-service..."
+      - ls -la admin-service
+      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ADMIN:latest admin-service
+
+      # Order Service
+      - echo "Building order-service..."
+      - ls -la order-service
+      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ORDER:latest order-service
+
+      # Product Service
+      - echo "Building product-service..."
+      - ls -la product-service
+      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:latest product-service
+
+  post_build:
+    commands:
+      - echo "Pushing Docker images to ECR..."
+      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ADMIN:latest
+      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ORDER:latest
+      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:latest
+      - echo "Build and push completed successfully!"
+
+artifacts:
+  files: '**/*'

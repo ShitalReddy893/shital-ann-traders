@@ -1,0 +1,67 @@
+.sign-up{
+    text-align: center;
+    margin-bottom: 50px;
+    margin-top: 80px;
+    color: blueviolet;
+}
+
+/* Input fields */
+/* Input fields */
+.form-input {
+  width: 300px;              /* text boxes ka size fix */
+  padding: 5px 5px;
+  margin: 6px 0;
+  border: 1px solid #9c27b0;
+  border-radius: 6px;
+  font-size: 14px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;        /* center align */
+}
+
+/* Buttons */
+.form-button {
+  display: block;
+  width: 140px;              /* buttons smaller */
+  padding: 8px 12px;
+  margin: 8px auto;          /* center align */
+  background-color: #9c27b0;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.form-button:hover {
+  background-color: #7b1fa2;
+}
+
+/* Section spacing */
+.common-form {
+  margin-bottom: 12px;
+}
+
+
+/* Section spacing */
+.common-form {
+  margin-bottom: 12px;
+}
+
+
+.form-actions {
+  display: flex;              /* row banane ke liye */
+  justify-content: center;    /* center me laane ke liye */
+  gap: 10px;                  /* buttons ke beech space */
+  margin-top: 14px;           /* upar thoda gap */
+}
+/* 
+.form-button {
+  height: 35px;
+  width: 90px;
+  text-align: center;
+  border: 1px solid blueviolet;
+  cursor: pointer;
+} */

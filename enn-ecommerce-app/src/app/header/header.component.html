@@ -1,0 +1,16 @@
+<nav class="nav">
+    <h1>Ann-Ecommerce</h1>
+<div class="nav-search">
+
+   <input type="text" placeholder="search fo products"/> 
+   <button>Search</button>
+</div>
+<ul>
+    <li><a routerLink="/">Home</a></li>
+    <li><a routerLink="/seller-auth">Seller</a></li>
+    <li><a routerLink="/seller-home">Products</a></li>
+    <li><a routerLink="/login">Login</a></li>
+    <li><a routerLink="#">Cart({{cartCount}})</a></li>
+      <button *ngIf="isLoggedIn" (click)="logout()">Logout</button>
+</ul>
+</nav>

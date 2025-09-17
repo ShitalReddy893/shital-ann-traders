@@ -1,0 +1,31 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo "Updating kubeconfig for EKS cluster..."
+      - aws eks update-kubeconfig --name shital-eks-cluster --region us-east-1
+      - kubectl config get-contexts
+      - echo "Current context set to $(kubectl config current-context)"
+
+  build:
+    commands:
+      - echo "Deploying microservices to EKS Fargate namespace shital-ns..."
+      - kubectl apply -f k8s-manifests/ -n shital-ns
+
+      # Optional: wait for rollout of each deployment
+      - kubectl rollout status deployment/admin-service -n shital-ns
+      - kubectl rollout status deployment/order-service -n shital-ns
+      - kubectl rollout status deployment/product-service -n shital-ns
+
+  post_build:
+    commands:
+      - echo "Deployment completed successfully!"
+      - echo "Listing pods in shital-ns:"
+      - kubectl get pods -n shital-ns
+      - echo "Listing services in shital-ns:"
+      - kubectl get svc -n shital-ns
+
+artifacts:
+  files:
+    - '**/*'

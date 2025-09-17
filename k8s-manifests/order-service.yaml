@@ -1,0 +1,77 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: order-config
+  namespace: shital-ns
+data:
+  server.servlet.context-path: /order
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+  namespace: shital-ns
+  labels:
+    app: order-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-service
+  template:
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      containers:
+      - name: order-container
+        image: 230027225622.dkr.ecr.us-east-1.amazonaws.com/shital-ns/order-service:latest
+        ports:
+        - containerPort: 8081
+        envFrom:
+        - configMapRef:
+            name: order-config
+        - secretRef:
+            name: db-credentials
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+  namespace: shital-ns
+spec:
+  selector:
+    app: order-service
+  ports:
+    - protocol: TCP
+      port: 8081      # This port must match Ingress backend
+      targetPort: 8081
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: order-ingress
+  namespace: shital-ns
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-path: /order/actuator/health
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /order
+            pathType: Prefix
+            backend:
+              service:
+                name: order-service
+                port:
+                  number: 8081

@@ -1,0 +1,24 @@
+<p>seller-home works!</p>
+<h2>Available Products</h2>
+
+<div class="products">
+  <div class="product-card" *ngFor="let p of products">
+    <img [src]="p.imageUrl" alt="{{p.name}}" />
+    <h3>{{p.name}}</h3>
+    <p>{{p.description}}</p>
+    <h4>₹{{p.price}}</h4>
+    <button (click)="addToCart(p)">Add to Cart</button>
+    <button (click)="buyNow(p)">Buy Now</button>
+  </div>
+</div>
+
+<hr />
+
+<h2>Your Cart</h2>
+<div *ngIf="cartItems.length === 0">No items in cart</div>
+<ul>
+  <li *ngFor="let item of cartItems">
+    {{item.name}} - ₹{{item.price}}
+    <button (click)="removeFromCart(item)">Remove</button>
+  </li>
+</ul>
