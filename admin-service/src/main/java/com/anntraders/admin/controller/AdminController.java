@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admins")
-@CrossOrigin(origins = "http://localhost:4200") // Angular
+@CrossOrigin(origins = "*")
 public class AdminController {
 
 	private final AdminService service;
