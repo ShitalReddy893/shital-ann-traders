@@ -1,5 +1,5 @@
 # Stage 1: Build Angular app
-FROM 123456789012.dkr.ecr.us-east-1.amazonaws.com/my-node:20-alpine AS build
+FROM public.ecr.aws/docker/library/node:20-alpine AS build
 
 WORKDIR /app
 
