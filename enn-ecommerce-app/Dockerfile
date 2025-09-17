@@ -1,21 +1,29 @@
-server {
-  listen 80;
+# ===============================
+# Stage 1: Build Angular app
+# ===============================
+FROM node:20-alpine AS build
+WORKDIR /app
 
-  root /usr/share/nginx/html;
-  index index.html;
+# Install dependencies
+COPY package*.json ./
+RUN npm install
 
-  # Redirect everything to index.html for Angular SPA
-  location / {
-    try_files $uri /index.html;
-  }
+# Copy all source files
+COPY . .
 
-  # Optional: serve Angular app under /ecommerce path
-  location /ecommerce {
-    try_files $uri /index.html;
-  }
+# Build Angular app for production
+RUN npm run build -- --configuration production
 
-  # Optional: catch-all for any nested routes
-  location / {
-    try_files $uri $uri/ /index.html;
-  }
-}
+# ===============================
+# Stage 2: Serve app with Nginx
+# ===============================
+FROM nginx:alpine
+
+# Copy custom Nginx config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy Angular build output (Angular 17 puts it inside /browser)
+COPY --from=build /app/dist/enn-ecommerce-app/browser /usr/share/nginx/html
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
