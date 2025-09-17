@@ -17,6 +17,7 @@ phases:
       - kubectl rollout status deployment/admin-service -n shital-ns
       - kubectl rollout status deployment/order-service -n shital-ns
       - kubectl rollout status deployment/product-service -n shital-ns
+      - kubectl rollout status deployment/enn-ecommerce-app -n shital-ns   # 👈 Angular app rollout
 
   post_build:
     commands:
