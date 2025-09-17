@@ -20,30 +20,26 @@ phases:
   build:
     commands:
       - echo "========== Building Docker images =========="
-
       - echo "Building admin-service"
       - ls -la admin-service || echo "WARNING: admin-service folder not found"
-      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ADMIN:$IMAGE_TAG admin-service || echo "WARNING: admin-service build failed, skipping"
-
+      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ADMIN:$IMAGE_TAG admin-service
       - echo "Building order-service"
       - ls -la order-service || echo "WARNING: order-service folder not found"
-      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ORDER:$IMAGE_TAG order-service || echo "WARNING: order-service build failed, skipping"
-
+      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ORDER:$IMAGE_TAG order-service
       - echo "Building product-service"
       - ls -la product-service || echo "WARNING: product-service folder not found"
-      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:$IMAGE_TAG product-service || echo "WARNING: product-service build failed, skipping"
-
+      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:$IMAGE_TAG product-service
       - echo "Building enn-ecommerce-app"
       - ls -la enn-ecommerce-app || echo "WARNING: enn-ecommerce-app folder not found"
-      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:$IMAGE_TAG enn-ecommerce-app || echo "WARNING: enn-ecommerce-app build failed, skipping"
+      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:$IMAGE_TAG enn-ecommerce-app
 
   post_build:
     commands:
       - echo "========== Pushing Docker images =========="
-      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ADMIN:$IMAGE_TAG || echo "WARNING: admin-service push skipped"
-      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ORDER:$IMAGE_TAG || echo "WARNING: order-service push skipped"
-      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:$IMAGE_TAG || echo "WARNING: product-service push skipped"
-      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:$IMAGE_TAG || echo "WARNING: enn-ecommerce-app push skipped"
+      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ADMIN:$IMAGE_TAG
+      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ORDER:$IMAGE_TAG
+      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:$IMAGE_TAG
+      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:$IMAGE_TAG
       - echo "Build and push completed successfully"
       - echo "Image tag used: $IMAGE_TAG"
 
