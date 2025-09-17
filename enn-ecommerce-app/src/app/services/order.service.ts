@@ -19,7 +19,7 @@ export interface Order {
 })
 
 export class OrderService {
-  private apiUrl = 'http://localhost:8083/api/orders';
+  private apiUrl = 'http://k8s-shitalns-ordering-1b031995ea-1197979564.us-east-1.elb.amazonaws.com/order/api/orders';
   // private notifyUrl = 'https://f3sobp69sd.execute-api.us-east-1.amazonaws.com/dev/notify';
 
   constructor(private http: HttpClient) { }
