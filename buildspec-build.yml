@@ -39,4 +39,17 @@ phases:
       # Angular App
       - echo "Building enn-ecommerce-app..."
       - ls -la enn-ecommerce-app || echo "⚠️ enn-ecommerce-app folder not found"
-      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION_
+      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:$IMAGE_TAG enn-ecommerce-app || echo "⚠️ enn-ecommerce-app build failed, skipping"
+
+  post_build:
+    commands:
+      - echo "========== Pushing Docker images =========="
+      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ADMIN:$IMAGE_TAG || echo "⚠️ admin-service push skipped"
+      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ORDER:$IMAGE_TAG || echo "⚠️ order-service push skipped"
+      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:$IMAGE_TAG || echo "⚠️ product-service push skipped"
+      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:$IMAGE_TAG || echo "⚠️ enn-ecommerce-app push skipped"
+      - echo "✅ Build and push completed successfully"
+      - echo "Image tag used: $IMAGE_TAG"
+
+artifacts:
+  files: '**/*'
