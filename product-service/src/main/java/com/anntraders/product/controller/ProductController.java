@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
-@CrossOrigin(origins = "http://localhost:4200") // Angular
+@CrossOrigin(origins = "*") // Angular
 public class ProductController {
 
     @Autowired
