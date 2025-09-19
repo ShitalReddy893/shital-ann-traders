@@ -48,6 +48,12 @@ phases:
       - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:latest || echo "⚠️ product-service push skipped"
       - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:latest || echo "⚠️ enn-ecommerce-app push skipped"
       - echo "✅ Build and push completed successfully"
-
+    # Restart deployments in EKS
+     - echo "Restarting Kubernetes deployments..."
+     - kubectl rollout restart deployment admin-service -n shital-ns
+     - kubectl rollout restart deployment order-service -n shital-ns
+     - kubectl rollout restart deployment product-service -n shital-ns
+     - kubectl rollout restart deployment enn-ecommerce-app -n shital-ns
+     - echo "✅ Pods restarted successfully"
 artifacts:
   files: '**/*'
