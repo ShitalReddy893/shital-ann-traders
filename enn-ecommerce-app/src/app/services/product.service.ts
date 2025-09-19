@@ -15,9 +15,9 @@ export interface Product {
 })
 export class ProductService {
 
-  private apiUrl = 'https://507uchkokl.execute-api.us-east-1.amazonaws.com/product/api/products';
+  private apiUrl = 'http://k8s-shitalns-producti-f5f8ce99e5-1602930351.us-east-1.elb.amazonaws.com/product/api/products';
   private s3Url  = 'https://507uchkokl.execute-api.us-east-1.amazonaws.com/api/s3';
-  private API_BASE = 'https://507uchkokl.execute-api.us-east-1.amazonaws.com/dev'; 
+  private API_BASE = 'https://f3sobp69sd.execute-api.us-east-1.amazonaws.com/dev;
 
   constructor(private http: HttpClient) { }
 
@@ -83,7 +83,7 @@ async createProduct(product: any) {
 
   updateProduct(id: number, product: any) {
   return firstValueFrom(
-    this.http.put(`http://localhost:8081/api/products/${id}`, product, {
+    this.http.put(`http://k8s-shitalns-producti-f5f8ce99e5-1602930351.us-east-1.elb.amazonaws.com/product/api/products/${id}`, product, {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     })
   );
