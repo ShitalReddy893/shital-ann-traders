@@ -8,6 +8,7 @@ env:
     REPO_ORDER: shital-ns/order-service
     REPO_PRODUCT: shital-ns/product-service
     REPO_ECOMMERCE: shital-ns/enn-ecommerce-app
+    BUILD_SERVICE: "all"   # Options: all, admin, order, product, ui
 
 phases:
   pre_build:
@@ -15,45 +16,49 @@ phases:
       - echo "Logging in to Amazon ECR..."
       - aws --version
       - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
+      - echo "Updating kubeconfig for EKS cluster..."
+      - aws eks update-kubeconfig --region $REGION --name shital-eks-cluster
 
   build:
     commands:
       - echo "========== Building Docker images =========="
 
       # Admin Service
-      - echo "Building admin-service..."
-      - ls -la admin-service || echo "⚠️ admin-service folder not found"
-      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ADMIN:latest admin-service || echo "⚠️ admin-service build failed, skipping"
+      - if [[ "$BUILD_SERVICE" == "all" || "$BUILD_SERVICE" == "admin" ]]; then
+          echo "Building admin-service...";
+          ls -la admin-service || echo "⚠️ admin-service folder not found";
+          docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ADMIN:latest admin-service || echo "⚠️ admin-service build failed, skipping";
+        fi
 
       # Order Service
-      - echo "Building order-service..."
-      - ls -la order-service || echo "⚠️ order-service folder not found"
-      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ORDER:latest order-service || echo "⚠️ order-service build failed, skipping"
+      - if [[ "$BUILD_SERVICE" == "all" || "$BUILD_SERVICE" == "order" ]]; then
+          echo "Building order-service...";
+          ls -la order-service || echo "⚠️ order-service folder not found";
+          docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ORDER:latest order-service || echo "⚠️ order-service build failed, skipping";
+        fi
 
       # Product Service
-      - echo "Building product-service..."
-      - ls -la product-service || echo "⚠️ product-service folder not found"
-      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:latest product-service || echo "⚠️ product-service build failed, skipping"
+      - if [[ "$BUILD_SERVICE" == "all" || "$BUILD_SERVICE" == "product" ]]; then
+          echo "Building product-service...";
+          ls -la product-service || echo "⚠️ product-service folder not found";
+          docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:latest product-service || echo "⚠️ product-service build failed, skipping";
+        fi
 
-      # Angular App
-      - echo "Building enn-ecommerce-app..."
-      - ls -la enn-ecommerce-app || echo "⚠️ enn-ecommerce-app folder not found"
-      - docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:latest enn-ecommerce-app || echo "⚠️ enn-ecommerce-app build failed, skipping"
+      # Angular UI App
+      - if [[ "$BUILD_SERVICE" == "all" || "$BUILD_SERVICE" == "ui" ]]; then
+          echo "Building enn-ecommerce-app...";
+          ls -la enn-ecommerce-app || echo "⚠️ enn-ecommerce-app folder not found";
+          docker build -t $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:latest enn-ecommerce-app || echo "⚠️ enn-ecommerce-app build failed, skipping";
+        fi
 
   post_build:
     commands:
       - echo "========== Pushing Docker images =========="
-      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ADMIN:latest || echo "⚠️ admin-service push skipped"
-      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ORDER:latest || echo "⚠️ order-service push skipped"
-      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:latest || echo "⚠️ product-service push skipped"
-      - docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:latest || echo "⚠️ enn-ecommerce-app push skipped"
+      - if [[ "$BUILD_SERVICE" == "all" || "$BUILD_SERVICE" == "admin" ]]; then docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ADMIN:latest || echo "⚠️ admin-service push skipped"; fi
+      - if [[ "$BUILD_SERVICE" == "all" || "$BUILD_SERVICE" == "order" ]]; then docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ORDER:latest || echo "⚠️ order-service push skipped"; fi
+      - if [[ "$BUILD_SERVICE" == "all" || "$BUILD_SERVICE" == "product" ]]; then docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_PRODUCT:latest || echo "⚠️ product-service push skipped"; fi
+      - if [[ "$BUILD_SERVICE" == "all" || "$BUILD_SERVICE" == "ui" ]]; then docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_ECOMMERCE:latest || echo "⚠️ enn-ecommerce-app push skipped"; fi
       - echo "✅ Build and push completed successfully"
-    # Restart deployments in EKS
-      - echo "Restarting Kubernetes deployments..."
-      - kubectl rollout restart deployment admin-service -n shital-ns
-      - kubectl rollout restart deployment order-service -n shital-ns
-      - kubectl rollout restart deployment product-service -n shital-ns
-      - kubectl rollout restart deployment enn-ecommerce-app -n shital-ns
-      - echo "✅ Pods restarted successfully"
+
 artifacts:
   files: '**/*'
