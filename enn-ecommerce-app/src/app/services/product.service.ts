@@ -15,7 +15,7 @@ export interface Product {
 })
 export class ProductService {
 
-  private apiUrl = 'http://k8s-shitalns-producti-f5f8ce99e5-1602930351.us-east-1.elb.amazonaws.com/product/api/products'; // Spring Boot
+  private apiUrl = 'https://507uchkokl.execute-api.us-east-1.amazonaws.com/product/api/products';
   private s3Url = 'http://localhost:8080/api/s3';
   private API_BASE = 'https://f3sobp69sd.execute-api.us-east-1.amazonaws.com/dev'; 
   // 👆 Replace with your actual Invoke URL
