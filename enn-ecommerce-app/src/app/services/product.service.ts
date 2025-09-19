@@ -67,7 +67,7 @@ export class ProductService {
 async createProduct(product: any) {
   console.log("Sending product to backend:", product);
   return await firstValueFrom(
-    this.http.post("http://localhost:8081/api/products", product, {
+    this.http.post("http://k8s-shitalns-producti-f5f8ce99e5-1602930351.us-east-1.elb.amazonaws.com/product/api/products", product, {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     })
   );
