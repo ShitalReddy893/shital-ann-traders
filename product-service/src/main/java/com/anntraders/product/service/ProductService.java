@@ -30,4 +30,17 @@ public class ProductService {
     public void deleteProduct(Long id) {
         repository.deleteById(id);
     }
+
+		
+	public Product updateProduct(Long id, Product updatedProduct) {
+		return repository.findById(id).map(existingProduct -> {
+			existingProduct.setName(updatedProduct.getName());
+			existingProduct.setDescription(updatedProduct.getDescription());
+			existingProduct.setPrice(updatedProduct.getPrice());
+			existingProduct.setImageUrl(updatedProduct.getImageUrl()); // keep image if changed
+			return repository.save(existingProduct);
+		}).orElseThrow(() -> new RuntimeException("Product not found with id " + id));
+	}
+	
+	
 }
