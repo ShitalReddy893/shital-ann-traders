@@ -1,4 +1,4 @@
-<div class="seller-auth">
+<!-- <div class="seller-auth">
     <div class="sign-up">
         <h1>Seller Sign-Up</h1>
         <form #sellerSignUp="ngForm" (ngSubmit)="signUp(sellerSignUp.value)" class="common-form">
@@ -8,4 +8,46 @@
             <button class="form-button">SignUp</button>
         </form>
     </div>
+</div> -->
+
+
+<div class="auth-container">
+  <h2 *ngIf="!isLoginMode">Register as Seller</h2>
+  <h2 *ngIf="isLoginMode">Login as Seller</h2>
+
+  <form (ngSubmit)="onSubmit()" #authForm="ngForm">
+    <!-- Name field only for Register -->
+    <div *ngIf="!isLoginMode" class="form-group">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" [(ngModel)]="seller.name" required />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" [(ngModel)]="seller.email" required />
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" [(ngModel)]="seller.password" required />
+    </div>
+
+    <button type="submit" class="btn-primary">
+      {{ isLoginMode ? 'Login' : 'Register' }}
+    </button>
+
+    <p class="toggle" *ngIf="!isConfirmSignupClicked" (click)="toggleMode()">
+      {{ isLoginMode ? "Don't have an account? Register here" : "Already have an account? Login here" }}
+    </p>
+  </form>
+  <!-- Confirm Signup -->
+  <form class="common-form" *ngIf="isSignupClicked" (ngSubmit)="confirmSignUp()">
+    <input class="form-input" [(ngModel)]="code" name="code" placeholder="Confirmation Code" />
+    <button class="form-button" type="submit">Confirm Sign Up</button>
+  </form>
+
+  <p [ngClass]="{'error-message': message?.includes('Invalid verification code')}">
+    {{message}}
+  </p>
+
 </div>

@@ -15,7 +15,7 @@ export class CartService {
 
   cartCount$ = this.cartCount.asObservable();
 
-  getItems() {
+  getCartItems() {
     return this.cartItems;
   }
 
@@ -33,5 +33,10 @@ export class CartService {
     this.cartItems = [];
     this.cartCount.next(0);
   }
+  
+  getTotal(): number {
+    return this.cartItems.reduce((sum, item) => sum + item.price, 0);
+  }
+  
 }
 

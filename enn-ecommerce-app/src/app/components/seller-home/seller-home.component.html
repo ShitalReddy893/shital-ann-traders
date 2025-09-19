@@ -1,4 +1,4 @@
-<h2>Available Products</h2>
+<!-- <h2>Available Products</h2>
 
 <div class="products">
   <div class="product-card" *ngFor="let p of products">
@@ -45,4 +45,163 @@
   </div>
 
   <button type="submit">Add Product</button>
+</form> -->
+<!-- <div class="seller-home">
+  <h2>Welcome Seller</h2>
+
+  <button class="btn-add" (click)="toggleAddForm()">+ Add Product</button>
+
+  <div *ngIf="showAddForm" class="add-form">
+    <h3>Add New Product</h3>
+    <form (ngSubmit)="addProduct()" #productForm="ngForm">
+      <input type="text" placeholder="Product Name" [(ngModel)]="newProduct.name" name="name" required />
+      <input type="number" placeholder="Price" [(ngModel)]="newProduct.price" name="price" required />
+      <input type="text" placeholder="Image URL" [(ngModel)]="newProduct.imageUrl" name="imageUrl" />
+      <textarea placeholder="Description" [(ngModel)]="newProduct.description" name="description"></textarea>
+      <button type="submit" class="btn-primary">Save Product</button>
+    </form>
+  </div>
+
+  <div class="product-list">
+    <h3>Your Products</h3>
+    <div *ngFor="let product of products" class="product-card">
+      <img [src]="product.imageUrl" alt="{{ product.name }}" />
+      <div class="info">
+        <h4>{{ product.name }}</h4>
+        <p>₹{{ product.price }}</p>
+        <button (click)="editProduct(product)">Edit</button>
+        <button class="btn-delete" (click)="deleteProduct(product.id)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+<!-- seller-add-product.component.html --><div>
+  <!-- <h2 class="title">My Products</h2>
+
+<form (ngSubmit)="addProduct()" class="add-form">
+  <input type="text" placeholder="Product Name" [(ngModel)]="newProduct.name" name="name" required />
+  <input type="text" placeholder="Description" [(ngModel)]="newProduct.description" name="description" />
+  <input type="number" placeholder="Price" [(ngModel)]="newProduct.price" name="price" required />
+  <input type="file" (change)="onFileSelected($event)" />
+
+  <button type="submit">Add Product</button>
 </form>
+
+<table class="products-table">
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Product Name</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products">
+      <td>
+        <img [src]="product.imageUrl" alt="{{product.name}}" class="product-img" />
+      </td>
+      <td>{{product.name}}</td>
+      <td>{{product.description}}</td>
+      <td>₹ {{product.price}}</td>
+      <td>
+        <button (click)="editProduct(product)">Edit</button>
+        <button (click)="deleteProduct(product.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table> -->
+
+<!-- <h2 class="title">My Products</h2> -->
+
+<!-- Add Product Button -->
+<!-- <button class="add-btn" (click)="toggleAddForm()">
+  {{ showAddForm ? 'Close Form' : 'Add Product' }}
+</button> -->
+
+<!-- Add Product Form (shown only when clicked) -->
+<!-- <div *ngIf="showAddForm" class="add-form">
+  <form (ngSubmit)="addProduct()">
+    <input type="text" placeholder="Product Name" [(ngModel)]="newProduct.name" name="name" required />
+    <textarea placeholder="Description" [(ngModel)]="newProduct.description" name="description"></textarea>
+    <input type="number" placeholder="Price" [(ngModel)]="newProduct.price" name="price" required /> -->
+
+    <!-- Image Upload -->
+    <!-- <input type="file" (change)="onFileSelected($event)" />
+    <div *ngIf="previewUrl" class="preview-box">
+      <img [src]="previewUrl" alt="Preview" class="preview-img" />
+    </div>
+
+    <button type="submit">Save Product</button>
+  </form>
+</div> -->
+
+
+<!-- Add Product -->
+<!-- Add Product -->
+<h2 class="title">My Products</h2>
+
+<!-- Success/Error Message -->
+<div *ngIf="message" [ngClass]="{ 'success-msg': success, 'error-msg': !success }">
+  {{ message }}
+</div>
+
+<!-- Add Product Button -->
+<button class="add-btn" (click)="toggleAddForm()">
+  {{ showAddForm ? 'Close Form' : 'Add Product' }}
+</button>
+
+<!-- Add/Edit Product Form (shown only when clicked) -->
+<div *ngIf="showAddForm" class="add-form">
+  <!-- ✅ New dynamic heading -->
+  <h3>{{ editMode ? 'Edit Product' : 'Add Product' }}</h3>
+
+  <!-- ✅ CHANGED: use saveProduct() instead of addProduct() -->
+  <form (ngSubmit)="saveProduct()">
+    <input type="text" placeholder="Product Name" [(ngModel)]="newProduct.name" name="name" required />
+    <textarea placeholder="Description" [(ngModel)]="newProduct.description" name="description"></textarea>
+    <input type="number" placeholder="Price" [(ngModel)]="newProduct.price" name="price" required />
+
+    <!-- Image Upload -->
+    <input type="file" (change)="onFileSelected($event)" />
+    <div *ngIf="previewUrl" class="preview-box">
+      <img [src]="previewUrl" alt="Preview" class="preview-img" />
+    </div>
+
+    <!-- ✅ Button text changes dynamically -->
+    <button type="submit">{{ editMode ? 'Update Product' : 'Save Product' }}</button>
+
+    <!-- ✅ New Cancel button -->
+    <button type="button" (click)="clearForm(); showAddForm=false;">Cancel</button>
+  </form>
+</div>
+
+
+<!-- Products Table -->
+<table class="products-table">
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Product Name</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products">
+      <td>
+        <img [src]="product.imageUrl" alt="{{product.name}}" class="product-img" />
+      </td>
+      <td>{{product.name}}</td>
+      <td>{{product.description}}</td>
+      <td>₹ {{product.price}}</td>
+      <td>
+        <button class="action-btn edit" (click)="editProduct(product)">Edit</button>
+        <button class="action-btn delete" (click)="deleteProduct(product.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+

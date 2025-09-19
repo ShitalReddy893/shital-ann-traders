@@ -1,4 +1,4 @@
-.products {
+/* .products {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
@@ -30,4 +30,107 @@ button {
 button:hover {
   background: #6a0dad;
   color: white;
+} */
+
+
+
+/* Table styling */
+/* Add product form */
+
+/* Add product form */
+/* Table styling */
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-size: 14px; /* smaller text */
+}
+.products-table th, .products-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+  vertical-align: middle;
+}
+.products-table th {
+  background-color: #f4f4f4;
+}
+.products-table td {
+  line-height: 1.4;
+}
+
+/* Description column */
+.products-table td:nth-child(3) {
+  white-space: normal;
+  word-wrap: break-word;
+  max-width: 250px;
+}
+
+/* Compact image */
+.product-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+/* Action buttons */
+.action-btn {
+  padding: 4px 8px;
+  margin: 2px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.action-btn.edit {
+  background: #4CAF50;
+  color: white;
+}
+.action-btn.delete {
+  background: #F44336;
+  color: white;
+}
+.action-btn:hover {
+  opacity: 0.8;
+}
+
+/* Add product form */
+.add-form {
+  margin: 15px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fafafa;
+  width: 100%;
+  max-width: 600px;
+}
+.add-form input,
+.add-form textarea,
+.add-form button {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 8px;
+}
+
+/* Image preview */
+.preview-box {
+  margin-top: 10px;
+}
+.preview-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.success-msg {
+  color: green;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.error-msg {
+  color: red;
+  font-weight: bold;
+  margin: 10px 0;
 }
