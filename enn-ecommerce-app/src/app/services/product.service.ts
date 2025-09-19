@@ -15,8 +15,8 @@ export interface Product {
 })
 export class ProductService {
 
-  private apiUrl = 'https://507uchkokl.execute-api.us-east-1.amazonaws.com/dev/product/api/products';
-  private s3Url  = 'https://507uchkokl.execute-api.us-east-1.amazonaws.com/dev/s3/api';
+  private apiUrl = 'https://507uchkokl.execute-api.us-east-1.amazonaws.com/product/api/products';
+  private s3Url  = 'https://507uchkokl.execute-api.us-east-1.amazonaws.com/api/s3';
   private API_BASE = 'https://507uchkokl.execute-api.us-east-1.amazonaws.com/dev'; 
 
   constructor(private http: HttpClient) { }
