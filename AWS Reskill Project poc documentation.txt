@@ -1,0 +1,105 @@
+AWS Full Stack Developer Case Study: Multi-Service App Deployment on AWS
+Table of Contents
+
+Project Overview
+Technologies Used
+Architecture Diagram
+Frontend
+Backend
+Database & Credentials Management
+Containerization
+Deployment & CI/CD
+Load Balancing & Scaling
+Security
+Logging & Monitoring
+Testing
+Conclusion
+
+1. Project Overview
+
+  This project is a cloud-native application deployed on AWS. 
+  It consists of three backend microservices and one Angular-based UI application.
+  The architecture is designed to be scalable, secure, and automated through CI/CD pipelines.
+
+
+2. Technologies Used
+
+Source Control	 --> GitHub
+CI/CD Pipeline	 --> AWS CodePipeline
+Container Registry	--> Amazon ECR --> used to store the docker image 
+Application Hosting -->	Amazon EKS Fargate cluster--> created cluster , created name space and deployed application inside namespace 
+Frontend	--> Angular
+Backend     -->	Java (microservices)
+Load Balancer	-->AWS Application Load Balancer (ALB) ---> application load balance is the first end point for user (for routing )
+Database	--> Amazon RDS 
+Logging & Monitoring	Amazon CloudWatch'
+
+3. Architecture Diagram
+
+(Flow diagram showing GitHub → Codebuild → ECR → ECS Fargate (with 3 backends + Angular UI) → ALB → Users, plus Config Management
+Kubernetes ConfigMaps & Secrets)
+
+4. Frontend
+Developed with Angular.
+Containerized and deployed on EkS Fargate.
+Accessible via the Application Load Balancer (ALB).
+
+5. Backend
+
+Three backend microservices (e.g., Product Service, Order Service, User Service).
+Each microservice is containerized using Docker.
+Deployed as EkS Fargate tasks in the cluster.
+Communicate securely within the cluster.
+
+6. Database & Credentials Management
+
+Database credentials, S3 credentials, and other sensitive values are stored in EKS Secrets.
+Applications fetch secrets securely at runtime.
+
+7. Containerization
+
+Each service or microservice (frontend and backend) is packaged into a Docker image.
+Docker images are stored in Amazon ECR.
+
+8. Deployment & CI/CD
+
+GitHub →
+
+Aws Codebuild - 2 jobs
+1 build job -> build image and push to ECR
+2 deploy job -> Fetch images from ECR  and kubernates yaml changes( like deployment, configmap, services, ingress) etc 
+   from githubs and deploy on EKS cluster
+
+
+9. Load Balancing & Scaling
+
+ALB routes incoming traffic to ECS tasks
+Supports scaling based on request load.
+Ensures high availability and fault tolerance.
+
+10. Security
+
+Secrets stored in AWS Secrets Manager.
+
+IAM roles follow least privilege principle.
+
+SSL/TLS enabled via ALB for secure communication.
+
+11. Logging & Monitoring
+
+Amazon CloudWatch collects logs from ECS tasks and ALB.
+
+Metrics and alarms help monitor application health.
+
+12. Testing
+
+Unit and integration testing for backend microservices.
+
+Frontend end-to-end testing.
+
+CI/CD pipeline includes automated build validations.
+
+13. Conclusion
+
+This project demonstrates a modern cloud-native deployment on AWS using GitHub + CodePipeline + ECS Fargate + ECR + Secrets Manager + ALB. The architecture ensures scalability, automation, and security for hosting both frontend and backend services.
+
